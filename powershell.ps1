@@ -1,22 +1,19 @@
-# Connect to your Azure account
+# Variables
+$resourceGroupName = "<your-resource-group-name>"
+$location = "<your-location>"
+$storageAccountName = "<your-storage-account-name>"
+
+# Login to Azure
 Connect-AzAccount
 
-# Define parameters
-$resourceGroupName = "myResourceGroup"
-$location = "EastUS"
-$storageAccountName = "mystorageaccount"
-$sku = "Standard_LRS"
-
-# Create the resource group if it doesn't exist
-if (-Not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue)) {
+# Create Resource Group if it doesn't exist
+if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue)) {
     New-AzResourceGroup -Name $resourceGroupName -Location $location
 }
 
-# Create the storage account
+# Create Storage Account
 New-AzStorageAccount -ResourceGroupName $resourceGroupName `
                      -Name $storageAccountName `
                      -Location $location `
-                     -SkuName $sku `
-                     -Kind StorageV2
-
-Write-Output "Storage account '$storageAccountName' created successfully in resource group '$resourceGroupName' at location '$location'."
+                     -SkuName "Standard_LRS" `
+                     -Kind "StorageV2"
